@@ -1,13 +1,21 @@
 package com.jaygoo.demo;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.jaygoo.demo.fragments.BaseFragment;
 import com.jaygoo.demo.fragments.RangeSeekBarFragment;
 import com.jaygoo.demo.fragments.SingleSeekBarFragment;
@@ -19,7 +27,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String[] types = new String[]{"SINGLE", "RANGE", "STEP","VERTICAL"};
+    private static String[] types = new String[]{"SINGLE", "RANGE", "STEP", "VERTICAL"};
 
     List<BaseFragment> fragments = new ArrayList<>();
 
@@ -30,41 +38,45 @@ public class MainActivity extends AppCompatActivity {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         fragments.clear();
         fragments.add(new SingleSeekBarFragment());
         fragments.add(new RangeSeekBarFragment());
         fragments.add(new StepsSeekBarFragment());
         fragments.add(new VerticalSeekBarFragment());
 
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
         TabLayout tabLayout = findViewById(R.id.layout_tab);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager);
+        // 创建并设置适配器
+        viewPager.setAdapter(new PagerAdapter(this));
+        // 将 TabLayout 与 ViewPager2 关联
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            tab.setText(types[position]);
+        }).attach();
 
-        for (String s: types){
+        for (String s : types) {
             tabLayout.newTab().setText(s);
         }
     }
 
-    private class PagerAdapter extends FragmentPagerAdapter {
+    private class PagerAdapter extends FragmentStateAdapter {
 
-        public PagerAdapter(FragmentManager fm) {
-            super(fm);
+        public PagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
         }
 
+        @NonNull
         @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             return fragments.get(position);
         }
 
         @Override
-        public int getCount() {
-            return types.length;
+        public int getItemCount() {
+            return fragments.size();
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
+        public String getTitle(int position) {
             return types[position];
         }
     }

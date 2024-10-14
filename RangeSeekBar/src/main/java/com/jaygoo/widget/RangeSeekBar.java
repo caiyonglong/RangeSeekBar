@@ -9,9 +9,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Parcelable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -27,6 +24,10 @@ import java.util.List;
 
 import static com.jaygoo.widget.SeekBar.INDICATOR_ALWAYS_HIDE;
 import static com.jaygoo.widget.SeekBar.INDICATOR_ALWAYS_SHOW;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
 
 
 public class RangeSeekBar extends View {
@@ -155,7 +156,7 @@ public class RangeSeekBar extends View {
     //****************** the above is attr value  ******************//
 
     private boolean isEnable = true;
-    float touchDownX,touchDownY;
+    float touchDownX, touchDownY;
     //剩余最小间隔的进度
     float reservePercent;
     boolean isScaleThumb = false;
@@ -511,6 +512,8 @@ public class RangeSeekBar extends View {
     //初始化画笔
     private void initPaint() {
         paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
         paint.setColor(progressDefaultColor);
         paint.setTextSize(tickMarkTextSize);
     }
@@ -559,7 +562,7 @@ public class RangeSeekBar extends View {
 
     //calculate currTouchSB percent by MotionEvent
     protected float calculateCurrentSeekBarPercent(float touchDownX) {
-        if (currTouchSB == null)return 0;
+        if (currTouchSB == null) return 0;
         float percent = (touchDownX - getProgressLeft()) * 1f / (progressWidth);
         if (touchDownX < getProgressLeft()) {
             percent = 0;
@@ -976,6 +979,7 @@ public class RangeSeekBar extends View {
     /**
      * {@link #SEEKBAR_MODE_SINGLE} is single SeekBar
      * {@link #SEEKBAR_MODE_RANGE} is range SeekBar
+     *
      * @param seekBarMode
      */
     public void setSeekBarMode(@SeekBarModeDef int seekBarMode) {
@@ -990,6 +994,7 @@ public class RangeSeekBar extends View {
     /**
      * {@link #TICK_MARK_GRAVITY_LEFT} is number tick mark, it will locate the position according to the value.
      * {@link #TICK_MARK_GRAVITY_RIGHT} is text tick mark, it will be equally positioned.
+     *
      * @param tickMarkMode
      */
     public void setTickMarkMode(@TickMarkModeDef int tickMarkMode) {
@@ -1021,6 +1026,7 @@ public class RangeSeekBar extends View {
      * {@link #TICK_MARK_GRAVITY_LEFT}
      * {@link #TICK_MARK_GRAVITY_RIGHT}
      * {@link #TICK_MARK_GRAVITY_CENTER}
+     *
      * @param tickMarkGravity
      */
     public void setTickMarkGravity(@TickMarkGravityDef int tickMarkGravity) {
@@ -1167,6 +1173,7 @@ public class RangeSeekBar extends View {
     /**
      * the tick mark layout gravity
      * Gravity.TOP and Gravity.BOTTOM
+     *
      * @param tickMarkLayoutGravity
      */
     public void setTickMarkLayoutGravity(@TickMarkLayoutGravityDef int tickMarkLayoutGravity) {
@@ -1180,6 +1187,7 @@ public class RangeSeekBar extends View {
     /**
      * the RangeSeekBar gravity
      * Gravity.TOP and Gravity.BOTTOM
+     *
      * @param gravity
      */
     public void setGravity(@GravityDef int gravity) {

@@ -16,12 +16,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.core.content.ContextCompat;
 
 import java.text.DecimalFormat;
 
@@ -93,6 +94,7 @@ public class SeekBar {
     Rect indicatorTextRect = new Rect();
     Rect indicatorRect = new Rect();
     Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint thumbPaint = new Paint();
     DecimalFormat indicatorTextDecimalFormat;
     int scaleThumbWidth;
     int scaleThumbHeight;
@@ -101,8 +103,13 @@ public class SeekBar {
         this.rangeSeekBar = rangeSeekBar;
         this.isLeft = isLeft;
         initAttrs(attrs);
+        initPaint();
         initBitmap();
         initVariables();
+    }
+
+    public void initPaint() {
+        thumbPaint.setAntiAlias(true);
     }
 
     private void initAttrs(AttributeSet attrs) {
@@ -232,9 +239,9 @@ public class SeekBar {
      */
     protected void onDrawThumb(Canvas canvas) {
         if (thumbInactivatedBitmap != null && !isActivate) {
-            canvas.drawBitmap(thumbInactivatedBitmap, 0, rangeSeekBar.getProgressTop() + (rangeSeekBar.getProgressHeight() - scaleThumbHeight) / 2f, null);
+            canvas.drawBitmap(thumbInactivatedBitmap, 0, rangeSeekBar.getProgressTop() + (rangeSeekBar.getProgressHeight() - scaleThumbHeight) / 2f, thumbPaint);
         } else if (thumbBitmap != null) {
-            canvas.drawBitmap(thumbBitmap, 0, rangeSeekBar.getProgressTop() + (rangeSeekBar.getProgressHeight() - scaleThumbHeight) / 2f, null);
+            canvas.drawBitmap(thumbBitmap, 0, rangeSeekBar.getProgressTop() + (rangeSeekBar.getProgressHeight() - scaleThumbHeight) / 2f, thumbPaint);
         }
     }
 
@@ -497,6 +504,7 @@ public class SeekBar {
      * {@link #INDICATOR_ALWAYS_SHOW}
      * {@link #INDICATOR_ALWAYS_SHOW_AFTER_TOUCH}
      * {@link #INDICATOR_ALWAYS_SHOW}
+     *
      * @param indicatorShowMode
      */
     public void setIndicatorShowMode(@IndicatorModeDef int indicatorShowMode) {
@@ -512,10 +520,10 @@ public class SeekBar {
     }
 
     /**
-         * include indicator text Height、padding、margin
-         *
-         * @return The actual occupation height of indicator
-         */
+     * include indicator text Height、padding、margin
+     *
+     * @return The actual occupation height of indicator
+     */
     public int getIndicatorRawHeight() {
         if (indicatorHeight > 0) {
             if (indicatorBitmap != null) {
@@ -579,11 +587,7 @@ public class SeekBar {
     public void setThumbInactivatedDrawableId(@DrawableRes int thumbInactivatedDrawableId, int width, int height) {
         if (thumbInactivatedDrawableId != 0 && getResources() != null) {
             this.thumbInactivatedDrawableId = thumbInactivatedDrawableId;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                thumbInactivatedBitmap = Utils.drawableToBitmap(width, height, getResources().getDrawable(thumbInactivatedDrawableId, null));
-            } else {
-                thumbInactivatedBitmap = Utils.drawableToBitmap(width, height, getResources().getDrawable(thumbInactivatedDrawableId));
-            }
+            thumbInactivatedBitmap = Utils.drawableToBitmap(width, height, getResources().getDrawable(thumbInactivatedDrawableId, null));
         }
     }
 
@@ -594,16 +598,12 @@ public class SeekBar {
     public void setThumbDrawableId(@DrawableRes int thumbDrawableId, int width, int height) {
         if (thumbDrawableId != 0 && getResources() != null && width > 0 && height > 0) {
             this.thumbDrawableId = thumbDrawableId;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                thumbBitmap = Utils.drawableToBitmap(width, height, getResources().getDrawable(thumbDrawableId, null));
-            } else {
-                thumbBitmap = Utils.drawableToBitmap(width, height, getResources().getDrawable(thumbDrawableId));
-            }
+            thumbBitmap = Utils.drawableToBitmap(width, height, getResources().getDrawable(thumbDrawableId, null));
         }
     }
 
     public void setThumbDrawableId(@DrawableRes int thumbDrawableId) {
-        if (thumbWidth <= 0 || thumbHeight <= 0){
+        if (thumbWidth <= 0 || thumbHeight <= 0) {
             throw new IllegalArgumentException("please set thumbWidth and thumbHeight first!");
         }
         if (thumbDrawableId != 0 && getResources() != null) {

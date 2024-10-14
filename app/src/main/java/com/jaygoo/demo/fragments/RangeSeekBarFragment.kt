@@ -5,7 +5,6 @@ import com.jaygoo.demo.R
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.jaygoo.widget.SeekBar
-import kotlinx.android.synthetic.main.fragment_range.*
 
 /**
 //                       _ooOoo_
@@ -35,57 +34,67 @@ import kotlinx.android.synthetic.main.fragment_range.*
  * 描    述:
  * =====================================================
  */
-class RangeSeekBarFragment: BaseFragment() {
-	override fun getLayoutId(): Int {
-		return R.layout.fragment_range
-	}
+class RangeSeekBarFragment : BaseFragment() {
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_range
+    }
 
-	override fun initView(view: View) {
-		sb_range_1?.setProgress(0f, 100f)
-		changeSeekBarThumb(sb_range_1.leftSeekBar, sb_range_1.leftSeekBar.progress)
-		changeSeekBarThumb(sb_range_1.rightSeekBar, sb_range_1.rightSeekBar.progress)
-		sb_range_1?.setOnRangeChangedListener(object : OnRangeChangedListener{
-			override fun onRangeChanged(rangeSeekBar: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
-				changeSeekBarThumb(rangeSeekBar.leftSeekBar, leftValue)
-				changeSeekBarThumb(rangeSeekBar.rightSeekBar, rightValue)
-			}
+    override fun initView(view: View) {
+        val sb_range_1 = view.findViewById<RangeSeekBar>(R.id.sb_range_1)
+        val sb_range_2 = view.findViewById<RangeSeekBar>(R.id.sb_range_2)
+        val sb_range_3 = view.findViewById<RangeSeekBar>(R.id.sb_range_3)
+        val sb_range_4 = view.findViewById<RangeSeekBar>(R.id.sb_range_4)
+        val sb_range_5 = view.findViewById<RangeSeekBar>(R.id.sb_range_5)
+        val sb_range_6 = view.findViewById<RangeSeekBar>(R.id.sb_range_6)
+        val sb_range_8 = view.findViewById<RangeSeekBar>(R.id.sb_range_8)
 
-			override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
 
-			}
 
-			override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+        sb_range_1?.setProgress(0f, 100f)
+        changeSeekBarThumb(sb_range_1.leftSeekBar, sb_range_1.leftSeekBar.progress)
+        changeSeekBarThumb(sb_range_1.rightSeekBar, sb_range_1.rightSeekBar.progress)
+        sb_range_1?.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(rangeSeekBar: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
+                changeSeekBarThumb(rangeSeekBar.leftSeekBar, leftValue)
+                changeSeekBarThumb(rangeSeekBar.rightSeekBar, rightValue)
+            }
 
-			}
+            override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
 
-		})
+            }
 
-		sb_range_2?.setProgress(0f, 100f)
+            override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
 
-		sb_range_3?.setRange(-100f, 100f)
-		sb_range_3?.setProgress(0f, 80f)
-		sb_range_3?.setIndicatorTextDecimalFormat("0")
+            }
 
-		sb_range_4?.setProgress(20f, 70f)
+        })
 
-		sb_range_5?.setProgress(20f, 60f)
+        sb_range_2?.setProgress(0f, 100f)
 
-		sb_range_6?.setProgress(20f, 70f)
+        sb_range_3?.setRange(-100f, 100f)
+        sb_range_3?.setProgress(0f, 80f)
+        sb_range_3?.setIndicatorTextDecimalFormat("0")
 
-		sb_range_8?.setProgress(20f, 60f)
-		sb_range_8?.leftSeekBar?.thumbDrawableId = R.drawable.step_1
-		sb_range_8?.rightSeekBar?.thumbDrawableId = R.drawable.step_2
+        sb_range_4?.setProgress(20f, 70f)
 
-	}
+        sb_range_5?.setProgress(20f, 60f)
 
-	private fun changeSeekBarThumb(seekbar: SeekBar, value: Float){
-		if (value < 33){
-			seekbar.setThumbDrawableId(R.drawable.thumb_green, seekbar.thumbWidth, seekbar.thumbHeight)
-		}else if (value < 66){
-			seekbar.setThumbDrawableId(R.drawable.thumb_yellow, seekbar.thumbWidth, seekbar.thumbHeight)
-		}else{
-			seekbar.setThumbDrawableId(R.drawable.thumb_red, seekbar.thumbWidth, seekbar.thumbHeight)
-		}
-	}
+        sb_range_6?.setProgress(20f, 70f)
+
+        sb_range_8?.setProgress(20f, 60f)
+        sb_range_8?.leftSeekBar?.thumbDrawableId = R.drawable.step_1
+        sb_range_8?.rightSeekBar?.thumbDrawableId = R.drawable.step_2
+
+    }
+
+    private fun changeSeekBarThumb(seekbar: SeekBar, value: Float) {
+        if (value < 33) {
+            seekbar.setThumbDrawableId(R.drawable.thumb_green, seekbar.thumbWidth, seekbar.thumbHeight)
+        } else if (value < 66) {
+            seekbar.setThumbDrawableId(R.drawable.thumb_yellow, seekbar.thumbWidth, seekbar.thumbHeight)
+        } else {
+            seekbar.setThumbDrawableId(R.drawable.thumb_red, seekbar.thumbWidth, seekbar.thumbHeight)
+        }
+    }
 
 }

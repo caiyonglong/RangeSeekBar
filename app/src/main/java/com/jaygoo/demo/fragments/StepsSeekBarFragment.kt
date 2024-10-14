@@ -2,7 +2,7 @@ package com.jaygoo.demo.fragments
 
 import android.view.View
 import com.jaygoo.demo.R
-import kotlinx.android.synthetic.main.fragment_step.*
+import com.jaygoo.widget.RangeSeekBar
 import java.util.ArrayList
 
 /**
@@ -39,6 +39,10 @@ class StepsSeekBarFragment : BaseFragment() {
 	}
 
 	override fun initView(view: View) {
+		val sb_steps_1 = view.findViewById<RangeSeekBar>(R.id.sb_steps_1)
+		val sb_steps_2 = view.findViewById<RangeSeekBar>(R.id.sb_steps_2)
+
+
 		val stepsDrawables = ArrayList<Int>()
 		stepsDrawables.add(R.drawable.step_1)
 		stepsDrawables.add(R.drawable.step_2)
